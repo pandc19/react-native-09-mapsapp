@@ -7,11 +7,20 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
+    "start:ios": "npm run ios -- --simulator='iPhone 15 Pro Max (E54354D3-1E70-4D74-92C2-15240D202176)'",
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-masked-view/masked-view": "^0.3.2",
+    "@react-native-vector-icons/ionicons": "^12.0.0",
+    "@react-navigation/native": "^7.1.9",
+    "@react-navigation/stack": "^7.3.2",
     "react": "19.0.0",
-    "react-native": "0.79.2"
+    "react-native": "0.79.2",
+    "react-native-gesture-handler": "^2.25.0",
+    "react-native-permissions": "^5.4.0",
+    "react-native-safe-area-context": "^5.4.1",
+    "react-native-screens": "^4.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
