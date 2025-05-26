@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Platform} from 'react-native';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Marker, Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
 import {Location} from '../../../infrastructure/interfaces/location';
 import {FAB} from './ui/FAB';
 import {useLocationStore} from '../../store/location/useLocationStore';
@@ -14,9 +14,15 @@ export const Map = ({showsUserLocation = true, initialLocation}: Props) => {
   const mapRef = useRef<MapView>(null);
   const cameraLocation = useRef<Location>(initialLocation);
   const [isFollowingUser, setIsFollowingUser] = useState(true);
+  const [isShowingPolyline, setIsShowingPolyline] = useState(true);
 
-  const {getLocation, lastKnownLocation, watchLocation, clearWatchLocation} =
-    useLocationStore();
+  const {
+    getLocation,
+    lastKnownLocation,
+    watchLocation,
+    clearWatchLocation,
+    userLocationList,
+  } = useLocationStore();
 
   const moveCameraToLocation = (location: Location) => {
     if (!mapRef.current) return;
@@ -59,6 +65,14 @@ export const Map = ({showsUserLocation = true, initialLocation}: Props) => {
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}>
+        {isShowingPolyline && (
+          <Polyline
+            coordinates={userLocationList}
+            strokeColor={Platform.OS === 'ios' ? 'black' : 'white'}
+            strokeWidth={5}
+          />
+        )}
+
         {/* <Marker
           coordinate={{
             latitude: 37.78825,
@@ -69,6 +83,15 @@ export const Map = ({showsUserLocation = true, initialLocation}: Props) => {
           image={require('../../../assets/custom-marker.png')}
         /> */}
       </MapView>
+
+      <FAB
+        iconName={isShowingPolyline ? 'eye-outline' : 'eye-off-outline'}
+        onPress={() => setIsShowingPolyline(!isShowingPolyline)}
+        style={{
+          bottom: 140,
+          right: 20,
+        }}
+      />
 
       <FAB
         iconName={isFollowingUser ? 'walk-outline' : 'accessibility-outline'}
